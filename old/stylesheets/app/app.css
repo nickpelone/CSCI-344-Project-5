@@ -1,0 +1,47 @@
+.tabs {
+  margin-top: 50px;
+  margin-bottom:20px;
+}
+
+.tabs .tab {
+  background: #ccc;
+  padding: 5px;
+}
+
+.tabs .active {
+  background: white;
+  border: 1px solid black;
+  border-bottom-width: 0;
+}
+
+.content .tab {
+  display: none; 
+}
+
+.content .active {
+  display: block;
+}
+
+#toDoItem{
+  padding: 5px;
+  margin: 2px;
+  background: black;
+  color:white;
+}
+
+.delete{
+  top: 1em;
+  right: 1em;
+}
+
+body{
+  font-family: 'Roboto', sans-serif;
+  font-size:125%;
+}
+
+#tabAllContent{
+  background:#9EFFB8;
+  display: inline-block;
+  border-radius:10px;
+  padding:10px;
+}
