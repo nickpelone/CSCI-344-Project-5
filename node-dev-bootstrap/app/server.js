@@ -1,11 +1,25 @@
 var http = require('http'),
-    mongo = require('mongodb'),
     express = require('express'),
     app = express(),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    mongoClientReq = require('mongodb').MongoClient,
+    Server = require('mongodb').Server;
     mongoose.connect('mongodb://localhost/test');
 
 var TaskModel = mongoose.model('Task', {number: Number, description: String, categories: [String]});
+var mongoClient = new mongoClientReq(new Server ('localhost',27017));
+mongoClient.open(function (error, mongoClient){
+    if (error) throw error;
+    console.log("Opened connection to mongodb");
+    var db1 = mongoClient.db("todo");
+    mongoClient.close(function (error, response){
+        if (error) throw error;
+        mongoClient.close(function (err){
+            if (err) throw err;
+            console.log("mongoClient was closed");
+        });
+    });
+});
 
 var Task1 = new TaskModel;
 Task1.number = 1;
