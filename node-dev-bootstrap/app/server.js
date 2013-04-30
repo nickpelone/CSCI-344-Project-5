@@ -21,6 +21,17 @@ mongoClient.open(function (error, mongoClient){
     });
 });
 
+app.configure(function (){
+    app.use(express.static(path.join(__dirname, 'public')));
+    app.use(express.bodyParser());
+});
+
+app.post("/newTask", function(req,res){
+    //create mongo doc from parsed response
+    //add task into database
+    
+}
+
 var Task1 = new TaskModel;
 Task1.number = 1;
 Task1.description = "Something I gotta do";
