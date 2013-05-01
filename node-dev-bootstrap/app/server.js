@@ -14,11 +14,7 @@ function createMongoConnection(callback) {
         if (error) throw error;
         console.log("Opened connection to mongodb");
         var db1 = mongoClient.db("todo");
-        console.log("Set db to todo");
-        db1.createCollection('todos', function(err, collection){
-            if (err) throw err;
-            callback(mongoClient,db1,collection);
-        });  
+        callback(mongoClient);
     });
 }
 
@@ -28,14 +24,6 @@ function constructJSONFromCommand(input, callback) {
     jsonObject["description"] = input.body.description;
     jsonObject["categories"] = input.body.categories;
     callback(jsonObject);
-}
-
-function createTestTask(callback){
-    var testTask = new TaskModel;
-    testTask.number = 1;
-    testTask.description = "something I have to do";
-    testTask.catgegories = ["default"];
-    callback(testTask);
 }
 
 app.configure(function (){
@@ -73,23 +61,3 @@ http.createServer(function (req, res) {
 }).listen(3000);
 
 console.log('Server running on port 3000');
-
-createMongoConnection(function (mongoClient, db1, collectionToUse){
-    db1.collections(function (err, res) {
-        if(err){console.log("Error : " + err);}
-        db1.collections(function (err, res) {
-            console.log("The following is a list of collections." + '\n');
-            for(var i = 0; i < res.length; i++) {
-                console.log(res[i]);
-            }
-            createTestTask(function (task){
-                console.log(task);
-            });
-             console.log("Now inserting a test document");
-             collectionToUse.insert({name:"bob",age:"42"}, function (err, records){
-                console.log("Test document inserted with ID: " + records[0]._id);
-            });
-                
-        });
-    });
-});
