@@ -18,6 +18,14 @@ function createMongoConnection(callback) {
     });
 }
 
+function constructJSONFromCommand(input, callback) {
+    var jsonObject = {};
+    jsonObject["number"] = input.body.number;
+    jsonObject["description"] = input.body.description;
+    jsonObject["categories"] = input.body.categories;
+    callback(jsonObject);
+}
+
 app.configure(function (){
     app.use(express.static(path.join(__dirname, 'public')));
     app.use(express.bodyParser());
@@ -25,23 +33,24 @@ app.configure(function (){
 
 app.post("/newTask", function(req,res) {
     //create mongo doc from parsed response
-    //add task into database
+    constructJSONFromCommand(req, function(response) { 
+        createMongoConnection(function (mongoClient) {
+            mongoClient.db.collection.insert(response);
+        });
+    });
+    
 });
 
 app.get("/getData", function (req, res) {
     //construct JSON for response
+    constructJSONFromMongo(function (response) {
+        
+    });
     //we load this each pageload to check the db
     
 });
 
-var Task1 = new TaskModel;
-Task1.number = 1;
-Task1.description = "Something I gotta do";
-Task1.categories = ["default", "derp"];
-Task1.save(function (err,res){
-    if (err) throw err;
-    console.log("Task1.save returned: " + res);
-});
+
 
     
     
