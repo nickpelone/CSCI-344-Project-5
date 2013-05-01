@@ -1,5 +1,6 @@
 var http = require('http'),
     express = require('express'),
+    path = require('path'),
     app = express(),
     mongoose = require('mongoose'),
     mongoClientReq = require('mongodb').MongoClient,
@@ -7,30 +8,31 @@ var http = require('http'),
     mongoose.connect('mongodb://localhost/test');
 
 var TaskModel = mongoose.model('Task', {number: Number, description: String, categories: [String]});
-var mongoClient = new mongoClientReq(new Server ('localhost',27017));
-mongoClient.open(function (error, mongoClient){
-    if (error) throw error;
-    console.log("Opened connection to mongodb");
-    var db1 = mongoClient.db("todo");
-    mongoClient.close(function (error, response){
+function createMongoConnection(callback) {
+    var mongoClient = new mongoClientReq(new Server ('localhost',27017));
+        mongoClient.open(function (error, mongoClient){
         if (error) throw error;
-        mongoClient.close(function (err){
-            if (err) throw err;
-            console.log("mongoClient was closed");
-        });
+        console.log("Opened connection to mongodb");
+        var db1 = mongoClient.db("todo");
+        callback(mongoClient);
     });
-});
+}
 
 app.configure(function (){
     app.use(express.static(path.join(__dirname, 'public')));
     app.use(express.bodyParser());
 });
 
-app.post("/newTask", function(req,res){
+app.post("/newTask", function(req,res) {
     //create mongo doc from parsed response
     //add task into database
+});
+
+app.get("/getData", function (req, res) {
+    //construct JSON for response
+    //we load this each pageload to check the db
     
-}
+});
 
 var Task1 = new TaskModel;
 Task1.number = 1;
